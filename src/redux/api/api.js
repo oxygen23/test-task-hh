@@ -12,7 +12,7 @@ export const api = createApi({
     }),
     getBooksbyQueryes: builder.query({
       query: ({ inputValue, category, sortingBy, pagination }) =>
-        `books/v1/volumes?q=${inputValue}+subject:${category}&orderBy=${sortingBy}&startIndex=${pagination}&key=${API_KEY}`,
+        `books/v1/volumes?q=${inputValue}+subject:${category}&orderBy=${sortingBy}&startIndex=${pagination.start}&maxResults=${pagination.end}&key=${API_KEY}`,
     }),
   }),
 });

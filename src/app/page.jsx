@@ -8,7 +8,7 @@ export default function Home() {
   const [inputValue, setInputValue] = useState('js');
   const [category, setCategory] = useState('');
   const [sorting, setSorting] = useState('relevance');
-  const [pagination, setPagination] = useState(0);
+  const [pagination, setPagination] = useState({ start: 0, end: 30 });
   const queryParameters = {
     inputValue: inputValue,
     category: category,
@@ -29,11 +29,18 @@ export default function Home() {
   };
 
   const handleViewMore = () => {
-    setPagination((prevPagination) => prevPagination + 10);
+    setPagination((prevPagination) => ({
+      ...prevPagination,
+      start: prevPagination.start + 10,
+    }));
   };
   const handleViewLess = () => {
-    setPagination((prevPagination) => prevPagination - 10);
+    setPagination((prevPagination) => ({
+      ...prevPagination,
+      start: prevPagination.start - 10,
+    }));
   };
+  console.log(data);
 
   return (
     <>
@@ -43,6 +50,9 @@ export default function Home() {
         fnSorting={handleSorting}
       />
       <div className={styles.container}>
+        <div className={styles.totalItems}>
+          <span>Found {data?.totalItems} results</span>
+        </div>
         {error ? (
           <div>Возникла ошибка, перезагрузите страницу</div>
         ) : isLoading || isFetching ? (
@@ -61,7 +71,7 @@ export default function Home() {
             >
               <button
                 onClick={() => handleViewLess()}
-                disabled={pagination <= 0 ? true : false}
+                disabled={pagination.start <= 0 ? true : false}
                 style={{
                   background: 'transparent',
                   fontSize: '25px',
